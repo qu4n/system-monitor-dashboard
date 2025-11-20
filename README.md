@@ -6,6 +6,12 @@ A beautiful, real-time system monitoring dashboard with live charts for CPU, GPU
 ![Docker](https://img.shields.io/badge/docker-required-blue.svg)
 ![Python](https://img.shields.io/badge/python-3.11-blue.svg)
 
+## Screenshot
+
+![Dashboard Screenshot](dashboard-screenshot.png)
+
+*Full view mode showing all 8 real-time monitoring charts*
+
 ## Features
 
 ### 📊 8 Real-Time Charts (60-second history, 1-second updates)
@@ -40,8 +46,8 @@ A beautiful, real-time system monitoring dashboard with live charts for CPU, GPU
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd system-monitor
+git clone https://github.com/qu4n/system-monitor-dashboard.git
+cd system-monitor-dashboard
 
 # Build and start
 docker compose up -d --build
