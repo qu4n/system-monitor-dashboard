@@ -1,0 +1,12 @@
+services:
+  monitor:
+    build: .
+    container_name: system-monitor
+    network_mode: host
+    privileged: true
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+    environment:
+      - HOST_PROC=/host/proc
