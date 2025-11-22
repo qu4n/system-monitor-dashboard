@@ -2,6 +2,7 @@
 import subprocess
 import json
 import time
+import os
 from flask import Flask, render_template, jsonify
 import threading
 import re
@@ -141,7 +142,7 @@ def get_cpu_cores():
 def get_cpu_freq():
     """Get CPU frequency in MHz"""
     try:
-        with open('/proc/cpuinfo', 'r') as f:
+        with open(os.environ.get('HOST_PROC', '/proc') + '/cpuinfo', 'r') as f:
             for line in f:
                 if 'cpu MHz' in line:
                     freq_mhz = float(line.split(':')[1].strip())
@@ -155,7 +156,7 @@ def get_cpu_power():
     global previous_energy, previous_time
     try:
         # Read energy in microjoules
-        with open('/sys/class/powercap/intel-rapl:0/energy_uj', 'r') as f:
+        with open(os.environ.get('HOST_PROC', '/proc').replace('/proc', '/host/sys') + '/class/powercap/intel-rapl:0/energy_uj', 'r') as f:
             current_energy = int(f.read().strip())
         
         current_time = time.time()
@@ -167,7 +168,7 @@ def get_cpu_power():
             
             # Handle counter wrap-around
             if energy_diff < 0:
-                with open('/sys/class/powercap/intel-rapl:0/max_energy_range_uj', 'r') as f:
+                with open(os.environ.get('HOST_PROC', '/proc').replace('/proc', '/host/sys') + '/class/powercap/intel-rapl:0/max_energy_range_uj', 'r') as f:
                     max_range = int(f.read().strip())
                 energy_diff += max_range
             
@@ -208,8 +209,10 @@ def get_network_speed():
         total_rx = 0
         total_tx = 0
         
-        # Read all network interfaces from /proc/net/dev
-        with open('/proc/net/dev', 'r') as f:
+        # Read all network interfaces from /proc/net/dev (use host proc if available)
+        import os
+        proc_path = os.environ.get('HOST_PROC', '/proc')
+        with open(f'{proc_path}/net/dev', 'r') as f:
             lines = f.readlines()[2:]  # Skip header lines
             for line in lines:
                 if ':' in line:
