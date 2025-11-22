@@ -155,8 +155,14 @@ def get_cpu_power():
     """Get CPU power draw from Intel RAPL"""
     global previous_energy, previous_time
     try:
+        # Determine the correct sys path
+        if os.environ.get('HOST_PROC') == '/host/proc':
+            sys_path = '/host/sys'
+        else:
+            sys_path = '/sys'
+        
         # Read energy in microjoules
-        with open(os.environ.get('HOST_PROC', '/proc').replace('/proc', '/host/sys') + '/class/powercap/intel-rapl:0/energy_uj', 'r') as f:
+        with open(sys_path + '/class/powercap/intel-rapl:0/energy_uj', 'r') as f:
             current_energy = int(f.read().strip())
         
         current_time = time.time()
@@ -168,7 +174,7 @@ def get_cpu_power():
             
             # Handle counter wrap-around
             if energy_diff < 0:
-                with open(os.environ.get('HOST_PROC', '/proc').replace('/proc', '/host/sys') + '/class/powercap/intel-rapl:0/max_energy_range_uj', 'r') as f:
+                with open(sys_path + '/class/powercap/intel-rapl:0/max_energy_range_uj', 'r') as f:
                     max_range = int(f.read().strip())
                 energy_diff += max_range
             
