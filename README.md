@@ -1,5 +1,19 @@
 # Real-Time System Monitor Dashboard
 
+> **⚠️ DEPRECATED - No Longer Deployed**
+> 
+> This Docker-based system monitor has been **removed from production**. The infrastructure has migrated to:
+> - **[k8s-fips-homelab](https://github.com/qu4n/k8s-fips-homelab)** - FIPS-compliant Kubernetes cluster
+> - Future monitoring will use **Prometheus + Grafana** in Kubernetes
+> 
+> **This application is no longer running** but preserved for reference.
+> 
+> If you want to deploy monitoring, consider using:
+> - [kube-prometheus-stack](https://github.com/prometheus-operator/kube-prometheus) for Kubernetes
+> - [Netdata](https://github.com/netdata/netdata) for lightweight system monitoring
+> 
+> ---
+
 A beautiful, real-time system monitoring dashboard with live charts for CPU, GPU, memory, network, and more. Built with Flask and Chart.js, running in Docker.
 
 ![Dashboard Preview](https://img.shields.io/badge/status-active-success.svg)
